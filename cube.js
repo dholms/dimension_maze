@@ -5,12 +5,13 @@ var Cube = function(l, h){
 	// tiles = new Image();
 	// tiles.src = "tiles.png";
 	tiles = document.getElementById("tiles");
+	finish = document.getElementById("finish");
 	AdjList = [
 	[1],[0,2],[1],[4, 8],[3],
-	[6],[5, 7],[6, 8],[3, 7],[-1],
-	[11, 15],[10, 16],[-1],[-1],[-1],
-	[10, 20],[11, 17, 21],[16],[-1],[24],
-	[15],[16],[-1],[-1],[19],
+	[6],[5, 7],[6, 8],[3, 7],[14],
+	[11, 15],[10, 16],[13],[12, 14, 18],[9, 13],
+	[10, 20],[11, 17, 21],[16],[13, 23],[24],
+	[15],[16],[-1],[18],[19],
 	[30],[-1],[-1],[-1],[-1],
 	[25],[-1],[-1],[-1],[-1],
 	[-1],[-1],[-1],[-1],[-1],
@@ -21,7 +22,7 @@ var Cube = function(l, h){
 	[-1],[-1],[-1],[58, 64, 68],[59, 63],
 	[-1],[-1],[-1],[63],[74],
 	[-1],[-1],[73],[72,74],[69, 73]
-	];
+];
 }
 
 Cube.prototype.drawTile = function(x, y, t){
@@ -42,6 +43,8 @@ Cube.prototype.drawLevel = function(l){
 		tile = this.getSprite(this.getTile(i));
 		this.drawTile(this.getCol(i)+1, this.getRow(i)+1, tile);
 	}
+	if(l == 0)
+		context.drawImage(finish, 160, 32);
 }
 
 Cube.prototype.getIndex = function(x, y, z){
@@ -155,4 +158,8 @@ Cube.prototype.canMove = function(x, y, z, m){
 		return true;
 	else
 		return false;
+}
+
+Cube.prototype.win = function(){
+	alert("YOU WIN!");
 }

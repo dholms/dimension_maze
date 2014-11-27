@@ -31,8 +31,11 @@ Player.prototype.move = function(m){
 	if(m==44){
 		this.changeLevel(cur_z - 1);
 	}
-
+	
 	this.draw();
+	if(cur_x == 4 && cur_y == 0 && cur_z ==0)
+		this.cube.win();
+
 }
 
 Player.prototype.changeLevel = function(m){

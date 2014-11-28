@@ -10,6 +10,10 @@ var Cube = function(l, h, prims){
 	AdjList = prims.construct();
 }
 
+Cube.prototype.getNeighbors = function(i){
+	return AdjList[i];
+}
+
 Cube.prototype.drawTile = function(x, y, t){
 	context.drawImage(tiles, t*32, 0, 32, 32, x*32, y*32, 32, 32);
 }
@@ -28,7 +32,7 @@ Cube.prototype.drawLevel = function(l){
 		tile = this.getSprite(this.getTile(i));
 		this.drawTile(this.getCol(i)+1, this.getRow(i)+1, tile);
 	}
-	if(l == 0)
+	if(l == 4)
 		context.drawImage(finish, 160, 32);
 }
 

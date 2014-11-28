@@ -18,5 +18,6 @@ $(document).keydown(function(e) {
     }            
 });
 
-var cube = new Cube(5, 3);
+var prims = new Prims(5, 3);
+var cube = new Cube(5, 3, prims);
 var player = new Player(0, 4, 0, context, cube);

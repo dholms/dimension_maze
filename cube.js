@@ -1,4 +1,4 @@
-var Cube = function(l, h){
+var Cube = function(l, h, prims){
 	length = l;
 	height = h;
 	size = length * length;
@@ -6,23 +6,8 @@ var Cube = function(l, h){
 	// tiles.src = "tiles.png";
 	tiles = document.getElementById("tiles");
 	finish = document.getElementById("finish");
-	AdjList = [
-	[1],[0,2],[1],[4, 8],[3],
-	[6],[5, 7],[6, 8],[3, 7],[14],
-	[11, 15],[10, 16],[13],[12, 14, 18],[9, 13],
-	[10, 20],[11, 17, 21],[16],[13, 23],[24],
-	[15],[16],[-1],[18],[19],
-	[30],[-1],[-1],[-1],[-1],
-	[25],[-1],[-1],[-1],[-1],
-	[-1],[-1],[-1],[-1],[-1],
-	[-1],[-1],[47],[44],[43],
-	[46],[45],[42],[-1],[-1],
-	[51],[50, 52, 56],[51],[54],[53, 59],
-	[-1],[51, 57],[56, 58],[57, 63],[54, 64],
-	[-1],[-1],[-1],[58, 64, 68],[59, 63],
-	[-1],[-1],[-1],[63],[74],
-	[-1],[-1],[73],[72,74],[69, 73]
-];
+	prims = prims;
+	AdjList = prims.construct();
 }
 
 Cube.prototype.drawTile = function(x, y, t){

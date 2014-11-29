@@ -33,7 +33,7 @@ Player.prototype.move = function(m){
 	}
 	
 	this.draw();
-	if(cur_x == 4 && cur_y == 0 && cur_z ==4)
+	if(cur_x == 9 && cur_y == 9 && cur_z ==4)
 		this.cube.win();
 
 }

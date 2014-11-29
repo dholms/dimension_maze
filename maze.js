@@ -1,5 +1,7 @@
 var canvas;
 var context;
+var length= 8;
+var height = 5;
 var AdjList = [];
 
 $(document).ready(function(){
@@ -18,6 +20,6 @@ $(document).keydown(function(e) {
     }            
 });
 
-var prims = new Prims(5, 5);
-var cube = new Cube(5, 5, prims);
-var player = new Player(0, 4, 0, context, cube);
+var prims = new Prims(length, height);
+var cube = new Cube(length, height, prims);
+var player = new Player(0, 0, 0, context, cube);

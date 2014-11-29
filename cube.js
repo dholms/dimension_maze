@@ -8,6 +8,11 @@ var Cube = function(l, h, prims){
 	finish = document.getElementById("finish");
 	prims = prims;
 	AdjList = prims.construct();
+	exit = [7, 7 , 4]
+}
+
+Cube.prototype.getAdjList = function(){
+	return AdjList;
 }
 
 Cube.prototype.getNeighbors = function(i){
@@ -32,8 +37,8 @@ Cube.prototype.drawLevel = function(l){
 		tile = this.getSprite(this.getTile(i));
 		this.drawTile(this.getCol(i)+1, this.getRow(i)+1, tile);
 	}
-	if(l == 4)
-		context.drawImage(finish, 160, 32);
+	if(l == exit[2])
+		context.drawImage(finish, 32*(exit[0]+1), 32*(exit[1]+1));
 }
 
 Cube.prototype.getIndex = function(x, y, z){
@@ -150,5 +155,6 @@ Cube.prototype.canMove = function(x, y, z, m){
 }
 
 Cube.prototype.win = function(){
-	alert("YOU WIN!");
+	// alert("YOU WIN!");
+	location.reload();
 }

@@ -3,7 +3,6 @@ var Prims = function(length, height){
 	height = height;
 	levelSize = length * length;
 	totalSize = levelSize * height;
-	WallList = [];
 	inMaze = [];
 	AdjList = [];
 	for(var i = 0; i < totalSize; i++){
@@ -16,14 +15,27 @@ var Prims = function(length, height){
 Prims.prototype.construct = function(){
 	 for(var i = 0; i < height; i++){
 	 	if(i%2 == 0){
-	 		this.addFewBlocks(i);
+	 		// this.addFewBlocks(i);
 	 	}
 	 	else{
-	 		this.addManyBlocks(i);
+	 		// this.addManyBlocks(i);
 	 	}
+	 	this.addBlocks(i);
 	 }
 	 this.makePath();
 	 return AdjList
+}
+Prims.prototype.addBlocks = function(l){
+	blocks = [];
+	for(var i = 0; i < levelSize/2; i++){
+		blocks.push(Math.floor(Math.random()*levelSize));
+	}
+
+	for(var i = 0; i < blocks.length; i++){
+		index = blocks[i]
+		if(index != 0 && index != 64 && index != 319)
+			AdjList[blocks[i] + l*levelSize] = [-1];  //adds to adjList
+	}
 }
 
 //adds at most length number of blocks
@@ -42,7 +54,7 @@ Prims.prototype.addFewBlocks = function(l){
 //adds at least levelSize-2*length blocks
 Prims.prototype.addManyBlocks = function(l){
 	notBlocks = [];
-	for(var i = 0; i < 2*length; i++){
+	for(var i = 0; i < 5*length; i++){
 		notBlocks.push(Math.floor(Math.random()*levelSize)+ l*levelSize);
 	}
 
@@ -54,14 +66,25 @@ Prims.prototype.addManyBlocks = function(l){
 }
 
 Prims.prototype.makePath = function(){
-	inMaze[20] = 1;
+	var WallList = [];
+	var VerticalWalls = [];
+	inMaze[0] = 1;
 	neighbors = this.getNeighbors(20);
 	for(var i = 0; i < neighbors.length; i++){
-		WallList.push([20, neighbors[i]]);
+		if(neighbors[i] == levelSize)
+			VerticalWalls.push([0, neighbors[i]]);
+		else
+			WallList.push([0, neighbors[i]]);
 	}
 	while(WallList.length > 0){
-		wallNumber = Math.floor(Math.random()*WallList.length);
-		wall = WallList[wallNumber];
+		if(VerticalWalls.length != 0){
+			wallNumber = -1;
+			wall = VerticalWalls.pop();
+		}
+		else{
+			wallNumber = Math.floor(Math.random()*WallList.length);
+			wall = WallList[wallNumber];
+		}
 		cell1 = wall[0];
 		cell2 = wall[1];
 		//if not in maze, take away wall between two (connect)
@@ -71,11 +94,15 @@ Prims.prototype.makePath = function(){
 			AdjList[cell2].push(cell1);
 			neighbors = this.getNeighbors(cell2);
 			for(var i = 0; i < neighbors.length; i++){
-				WallList.push([cell2, neighbors[i]]);
+				if(neighbors[i] == cell2+levelSize || neighbors[i] == cell2-levelSize)
+					VerticalWalls.push([cell2, neighbors[i]]);
+				else
+					WallList.push([cell2, neighbors[i]]);
 			}
 		}
 		//remove from wall list
-		WallList.splice(wallNumber, 1);
+		if(wallNumber >-1)
+			WallList.splice(wallNumber, 1);
 	}
 }
 

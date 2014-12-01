@@ -1,3 +1,5 @@
+var bfs;
+
 var Cube = function(l, h, prims){
 	length = l;
 	height = h;
@@ -7,8 +9,26 @@ var Cube = function(l, h, prims){
 	tiles = document.getElementById("tiles");
 	finish = document.getElementById("finish");
 	prims = prims;
-	AdjList = prims.construct();
-	exit = [7, 7 , 4]
+	var goodMaze = false;
+	while(!goodMaze){
+		AdjList = prims.construct();
+		bfs = new BFS(AdjList);
+		console.log(bfs.isReachable(0, this.getIndex(4, 4, 2)));
+		goodMaze = bfs.isReachable(0, this.getIndex(4, 4, 2));
+	}
+	
+	exit = [4, 4 , 2]
+}
+
+Cube.prototype.solution = function(){
+	var p = bfs.parents();
+	nextNode = 74;
+	while(nextNode != 0){
+		console.log(p[nextNode]);
+		nextNode = p[nextNode];
+	}
+
+	return bfs.parents();
 }
 
 Cube.prototype.getAdjList = function(){
@@ -39,6 +59,8 @@ Cube.prototype.drawLevel = function(l){
 	}
 	if(l == exit[2])
 		context.drawImage(finish, 32*(exit[0]+1), 32*(exit[1]+1));
+
+	// console.log(bfs.isReachable(0, this.getIndex(4, 4, 2)));
 }
 
 Cube.prototype.getIndex = function(x, y, z){

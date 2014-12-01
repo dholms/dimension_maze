@@ -1,7 +1,7 @@
 var canvas;
 var context;
-var length= 8;
-var height = 5;
+var length= 5;
+var height = 3;
 var AdjList = [];
 
 $(document).ready(function(){

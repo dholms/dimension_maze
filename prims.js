@@ -5,6 +5,7 @@ var Prims = function(length, height){
 	totalSize = levelSize * height;
 	inMaze = [];
 	AdjList = [];
+	AdjList.length = 0;
 	for(var i = 0; i < totalSize; i++){
 		AdjList.push([]);
 		inMaze.push(0);
@@ -32,9 +33,9 @@ Prims.prototype.addBlocks = function(l){
 	}
 
 	for(var i = 0; i < blocks.length; i++){
-		index = blocks[i]
-		if(index != 0 && index != 64 && index != 319)
-			AdjList[blocks[i] + l*levelSize] = [-1];  //adds to adjList
+		index = blocks[i] + l*levelSize
+		if(index != 0 && index != 25 && index != 74)
+			AdjList[index] = [-1];  //adds to adjList
 	}
 }
 
@@ -69,7 +70,7 @@ Prims.prototype.makePath = function(){
 	var WallList = [];
 	var VerticalWalls = [];
 	inMaze[0] = 1;
-	neighbors = this.getNeighbors(20);
+	var neighbors = this.getPossibleNeighbors(0);
 	for(var i = 0; i < neighbors.length; i++){
 		if(neighbors[i] == levelSize)
 			VerticalWalls.push([0, neighbors[i]]);
@@ -92,7 +93,7 @@ Prims.prototype.makePath = function(){
 			inMaze[cell2] = 1;
 			AdjList[cell1].push(cell2);
 			AdjList[cell2].push(cell1);
-			neighbors = this.getNeighbors(cell2);
+			neighbors = this.getPossibleNeighbors(cell2);
 			for(var i = 0; i < neighbors.length; i++){
 				if(neighbors[i] == cell2+levelSize || neighbors[i] == cell2-levelSize)
 					VerticalWalls.push([cell2, neighbors[i]]);
@@ -106,17 +107,20 @@ Prims.prototype.makePath = function(){
 	}
 }
 
-Prims.prototype.getNeighbors = function(i){
+Prims.prototype.getPossibleNeighbors = function(i){
 	level = Math.floor(i/levelSize);
 	neighbors = [];
-	if(i - length >= level && AdjList[i-length][0] != -1)
+	//neighbors forward and backward
+	if(i - length >= level*levelSize && AdjList[i-length][0] != -1)
 		neighbors.push(i-length);
-	if((i + length)/levelSize < level+1 && AdjList[i+length][0] != -1)
+	if((i + length) < (level+1)*levelSize && AdjList[i+length][0] != -1)
 		neighbors.push(i+length);
+	//neighbors to the left and right
 	if(i%length != 0 && AdjList[i-1][0] != -1)
 		neighbors.push(i-1);
 	if(i%length != length -1 && AdjList[i+1][0] != -1)
 		neighbors.push(i+1);
+	//neibors a floor up and down
 	if(level > 0 && AdjList[i-levelSize][0] != -1)
 		neighbors.push(i-levelSize);
 	if(level < height-1 && AdjList[i+levelSize][0] != -1)

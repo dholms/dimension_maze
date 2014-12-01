@@ -1,6 +1,6 @@
 var bfs;
 
-var Cube = function(l, h, prims){
+var Cube = function(l, h){
 	length = l;
 	height = h;
 	size = length * length;
@@ -8,9 +8,10 @@ var Cube = function(l, h, prims){
 	// tiles.src = "tiles.png";
 	tiles = document.getElementById("tiles");
 	finish = document.getElementById("finish");
-	prims = prims;
+	
 	var goodMaze = false;
 	while(!goodMaze){
+		prims = new Prims(length, height);
 		AdjList = prims.construct();
 		bfs = new BFS(AdjList);
 		console.log(bfs.isReachable(0, this.getIndex(4, 4, 2)));

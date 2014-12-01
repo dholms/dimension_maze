@@ -20,6 +20,6 @@ $(document).keydown(function(e) {
     }            
 });
 
-var prims = new Prims(length, height);
-var cube = new Cube(length, height, prims);
+// var prims = new Prims(length, height);
+var cube = new Cube(length, height);
 var player = new Player(0, 0, 0, context, cube);

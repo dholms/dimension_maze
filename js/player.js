@@ -33,6 +33,7 @@ Player.prototype.move = function(m){
 	}
 	
 	this.draw();
+	cube.levelHints(cur_x, cur_y, cur_z);
 	if(cur_x == 9 && cur_y == 9 && cur_z ==4)
 		this.cube.win();
 

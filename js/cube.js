@@ -4,6 +4,7 @@ var Cube = function(l, h){
 	length = l;
 	height = h;
 	size = length * length;
+
 	//gets loaded images from page
 	tiles = document.getElementById("tiles");
 	finish = document.getElementById("finish");
@@ -18,15 +19,16 @@ var Cube = function(l, h){
 		prims = new Prims(length, height);
 		AdjList = prims.construct();
 		bfs = new BFS(AdjList);
-		goodMaze = bfs.isReachable(0, this.getIndex(7, 7, 2));
+		goodMaze = bfs.isReachable(0, this.getIndex(length-1, length-1, height-1));
 	}
 	
-	exit = [7, 7 , 2]
+	exit = [length-1, length-1, height-1]
 }
 
+//prints solution indexes for debugging
 Cube.prototype.solution = function(){
 	var p = bfs.parents();
-	nextNode = 191;
+	nextNode = this.getTile(length-1, length-1, height-1);
 	while(nextNode != 0){
 		console.log(p[nextNode]);
 		nextNode = p[nextNode];
@@ -65,8 +67,6 @@ Cube.prototype.drawLevel = function(l){
 	}
 	if(l == exit[2])
 		context.drawImage(finish, 32*(exit[0]+1), 32*(exit[1]+1));
-
-	// console.log(bfs.isReachable(0, this.getIndex(4, 4, 2)));
 }
 
 Cube.prototype.getIndex = function(x, y, z){
@@ -150,6 +150,8 @@ Cube.prototype.getSprite = function(t){
 	}
 }
 
+//checks if the player is able to move from current location
+//m is the move where 0-3 are 2d movement and 32 and 44 are between levels
 Cube.prototype.canMove = function(x, y, z, m){
 	
 	index = this.getIndex(x, y, z);
@@ -188,9 +190,9 @@ Cube.prototype.win = function(){
 	location.reload();
 }
 
+//displays if you can move up or down a floor
 Cube.prototype.levelHints = function(x, y, z){
 	var index = this.getIndex(x, y, z);
-	console.log(index)
 	if(AdjList[index].indexOf(index+size) > -1 && AdjList[index].indexOf(index-size) > -1)
 		context.drawImage(updown, (length)*32, 0);
 	else if(AdjList[index].indexOf(index+size) > -1)

@@ -6,6 +6,9 @@ var Prims = function(length, height){
 	inMaze = [];
 	AdjList = [];
 	AdjList.length = 0;
+
+	//fills AdjList with empty arrays (no neighbors)
+	//fills inMaze with 0s so that nothing is in the maze
 	for(var i = 0; i < totalSize; i++){
 		AdjList.push([]);
 		inMaze.push(0);
@@ -13,19 +16,22 @@ var Prims = function(length, height){
 	
 }
 
+//add impassable blocks to each level then run randomized Prim's algorithm
 Prims.prototype.construct = function(){
 	 for(var i = 0; i < height; i++){
-	 	if(i%2 == 0){
-	 		// this.addFewBlocks(i);
-	 	}
-	 	else{
-	 		// this.addManyBlocks(i);
-	 	}
+	 	// if(i%2 == 0){
+	 	// 	// this.addFewBlocks(i);
+	 	// }
+	 	// else{
+	 	// 	// this.addManyBlocks(i);
+	 	// }
 	 	this.addBlocks(i);
 	 }
 	 this.makePath();
 	 return AdjList
 }
+
+//adds at most half the level size in blocks. Usually closer to a third or less
 Prims.prototype.addBlocks = function(l){
 	blocks = [];
 	for(var i = 0; i < levelSize/2; i++){
@@ -39,45 +45,49 @@ Prims.prototype.addBlocks = function(l){
 	}
 }
 
-//adds at most length number of blocks
-Prims.prototype.addFewBlocks = function(l){
-	blocks = [];
-	for(var i = 0; i < length; i++){
-		blocks.push(Math.floor(Math.random()*levelSize));
-	}
+// //adds at most length number of blocks
+// Prims.prototype.addFewBlocks = function(l){
+// 	blocks = [];
+// 	for(var i = 0; i < length; i++){
+// 		blocks.push(Math.floor(Math.random()*levelSize));
+// 	}
 
-	for(var i = 0; i < blocks.length; i++){
-		if(blocks[i] != 20 && blocks[i] != 45 && blocks[i] != 104)
-			AdjList[blocks[i] + l*levelSize].push(-1);  //adds to adjList
-	}
-}
+// 	for(var i = 0; i < blocks.length; i++){
+// 		if(blocks[i] != 20 && blocks[i] != 45 && blocks[i] != 104)
+// 			AdjList[blocks[i] + l*levelSize].push(-1);  //adds to adjList
+// 	}
+// }
 
-//adds at least levelSize-2*length blocks
-Prims.prototype.addManyBlocks = function(l){
-	notBlocks = [];
-	for(var i = 0; i < 5*length; i++){
-		notBlocks.push(Math.floor(Math.random()*levelSize)+ l*levelSize);
-	}
+// //adds at least levelSize-2*length blocks
+// Prims.prototype.addManyBlocks = function(l){
+// 	notBlocks = [];
+// 	for(var i = 0; i < 5*length; i++){
+// 		notBlocks.push(Math.floor(Math.random()*levelSize)+ l*levelSize);
+// 	}
 
-	for(var i = l*levelSize; i < (l+1)*levelSize; i++){
-		if(notBlocks.indexOf(i) < 0 && i!=45){
-			AdjList[i].push(-1);
-		}
-	}
-}
+// 	for(var i = l*levelSize; i < (l+1)*levelSize; i++){
+// 		if(notBlocks.indexOf(i) < 0 && i!=45){
+// 			AdjList[i].push(-1);
+// 		}
+// 	}
+// }
 
+//modified random prims algorithm
+//edges that go up and down between floors always take precedence
 Prims.prototype.makePath = function(){
 	var WallList = [];
 	var VerticalWalls = [];
 	inMaze[0] = 1;
 	var neighbors = this.getPossibleNeighbors(0);
 	for(var i = 0; i < neighbors.length; i++){
+		//if directly above
 		if(neighbors[i] == levelSize)
 			VerticalWalls.push([0, neighbors[i]]);
 		else
 			WallList.push([0, neighbors[i]]);
 	}
 	while(WallList.length > 0){
+		//first process edges that go between floors
 		if(VerticalWalls.length != 0){
 			wallNumber = -1;
 			wall = VerticalWalls.pop();
@@ -95,6 +105,7 @@ Prims.prototype.makePath = function(){
 			AdjList[cell2].push(cell1);
 			neighbors = this.getPossibleNeighbors(cell2);
 			for(var i = 0; i < neighbors.length; i++){
+				//if directly above or directly below
 				if(neighbors[i] == cell2+levelSize || neighbors[i] == cell2-levelSize)
 					VerticalWalls.push([cell2, neighbors[i]]);
 				else
@@ -107,6 +118,7 @@ Prims.prototype.makePath = function(){
 	}
 }
 
+//returns an array of all possible neighbors
 Prims.prototype.getPossibleNeighbors = function(i){
 	level = Math.floor(i/levelSize);
 	neighbors = [];

@@ -20,12 +20,14 @@ BFS.prototype.isReachable = function(start, end){
 }
 
 BFS.prototype.search = function(start, end){
+	//push start to queue then start bfs
 	var queue = [];
 	queue.push(start);
-	// var previous = start;
 	while(queue.length != 0){
+		//get the first cell to be added to queue
 		var cell = queue.shift();
 		var neighbors = AdjList[cell];
+		//if not already in traversal, add to the queue
 		for(var i = 0; i < neighbors.length; i++){
 			var neighbor = neighbors[i]
 			if(parent[neighbor] == -1){
@@ -35,6 +37,5 @@ BFS.prototype.search = function(start, end){
 			if(neighbor == end)
 				return;
 		}
-		// previous = cell;
 	}
 }

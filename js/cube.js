@@ -4,26 +4,29 @@ var Cube = function(l, h){
 	length = l;
 	height = h;
 	size = length * length;
-	// tiles = new Image();
-	// tiles.src = "tiles.png";
+	//gets loaded images from page
 	tiles = document.getElementById("tiles");
 	finish = document.getElementById("finish");
+	up = document.getElementById("up");
+	down = document.getElementById("down");
+	updown = document.getElementById("updown");
 	
+	//uses prims to randomly generate a maze.
+	//runs bfs to make sure it is finishable/ if not it generates a new one
 	var goodMaze = false;
 	while(!goodMaze){
 		prims = new Prims(length, height);
 		AdjList = prims.construct();
 		bfs = new BFS(AdjList);
-		console.log(bfs.isReachable(0, this.getIndex(4, 4, 2)));
-		goodMaze = bfs.isReachable(0, this.getIndex(4, 4, 2));
+		goodMaze = bfs.isReachable(0, this.getIndex(7, 7, 2));
 	}
 	
-	exit = [4, 4 , 2]
+	exit = [7, 7 , 2]
 }
 
 Cube.prototype.solution = function(){
 	var p = bfs.parents();
-	nextNode = 74;
+	nextNode = 191;
 	while(nextNode != 0){
 		console.log(p[nextNode]);
 		nextNode = p[nextNode];
@@ -40,10 +43,12 @@ Cube.prototype.getNeighbors = function(i){
 	return AdjList[i];
 }
 
+//draws tile from tiles.png
 Cube.prototype.drawTile = function(x, y, t){
 	context.drawImage(tiles, t*32, 0, 32, 32, x*32, y*32, 32, 32);
 }
 
+//outside borders of graph
 Cube.prototype.drawBorders = function(){
 	for(var i = 1; i < length + 1; i++){
 		this.drawTile(0, i, 2);
@@ -76,7 +81,8 @@ Cube.prototype.getCol = function(t){
 	return t%length;
 }
 
-//t is index of tile in AdjList
+//t is index of cell in AdjList
+//returns type of tile needed. ie "123" or "14"
 Cube.prototype.getTile = function(t){
 	n = AdjList[t]; //n = neighbors
 	if(!n)
@@ -108,8 +114,8 @@ Cube.prototype.getTile = function(t){
 	return result;
 }
 
-//gets lcoation in sprite sheet
-//t is the edges the tile should have id "123" or "14"
+//gets location in sprite sheet
+//t is the edges the tile should have ie "123" or "14"
 Cube.prototype.getSprite = function(t){
 	if(t==""){
 		t = 0;
@@ -180,4 +186,17 @@ Cube.prototype.canMove = function(x, y, z, m){
 Cube.prototype.win = function(){
 	// alert("YOU WIN!");
 	location.reload();
+}
+
+Cube.prototype.levelHints = function(x, y, z){
+	var index = this.getIndex(x, y, z);
+	console.log(index)
+	if(AdjList[index].indexOf(index+size) > -1 && AdjList[index].indexOf(index-size) > -1)
+		context.drawImage(updown, (length)*32, 0);
+	else if(AdjList[index].indexOf(index+size) > -1)
+		context.drawImage(up, (length)*32, 0);
+	else if(AdjList[index].indexOf(index-size) > -1)
+		context.drawImage(down, (length)*32, 0);
+	else
+		context.drawImage(erase, (length)*32, 0);	
 }

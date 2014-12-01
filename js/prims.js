@@ -34,7 +34,7 @@ Prims.prototype.addBlocks = function(l){
 
 	for(var i = 0; i < blocks.length; i++){
 		index = blocks[i] + l*levelSize
-		if(index != 0 && index != 25 && index != 74)
+		if(index != 0 && index != 64 && index != 191)
 			AdjList[index] = [-1];  //adds to adjList
 	}
 }

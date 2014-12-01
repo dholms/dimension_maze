@@ -45,6 +45,7 @@ Player.prototype.changeLevel = function(m){
 
 Player.prototype.draw = function(){
 	context.drawImage(player_image, (cur_x+1)*32, (cur_y + 1)*32);
+	cube.levelHints(cur_x, cur_y, cur_z);
 }
 
 Player.prototype.erase = function(){

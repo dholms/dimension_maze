@@ -1,6 +1,6 @@
 var canvas;
 var context;
-var length= 5;
+var length= 8;
 var height = 3;
 var AdjList = [];
 

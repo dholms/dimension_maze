@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<<!-- meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"> -->
+	<title>Dimension Maze</title>
+	<style type="text/css">
+    	canvas{
+    		margin-left: auto;
+    		margin-right: auto;
+    		display: block;
+    	}
+    	h1{
+    		text-align: center;
+    		font-family: Helvetica, "sans-serif";
+    		color: #333;
+    	}
+    	p{
+    		text-align: center;
+    	}
+    </style>
+</head>
+<body>
+<canvas id="c" width = "400" height = "400"></canvas>
+<div style="display:none;">
+	<img id="tiles" src = "img/tiles.png">
+	<img id="player" src = "img/player.png">
+	<img id="erase" src="img/erase.png">
+	<img id="finish" src="img/finish.png">
+	<img id="up" src="img/up.png">
+	<img id="down" src="img/down.png">
+	<img id="updown" src="img/updown.png">
+</div>
+<p>Move with the arrow keys. Go up a level with <i>e</i> and go down a level with <i>q</i>.</p>
+<p>Try to make it to the <strong>X</strong> on the top level!</p>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<!-- <script type="text/javascript" src="js/hammer.min.js"></script> -->
+<script type="text/javascript" src="js/prims.js"></script>
+<script type="text/javascript" src="js/BFS.js"></script>
+<script type="text/javascript" src="js/cube.js"></script>
+<script type="text/javascript" src="js/player.js"></script>
+<script type="text/javascript" src="js/maze.js"></script>
+</html>

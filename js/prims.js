@@ -45,6 +45,8 @@ Prims.prototype.addBlocks = function(l){
 	}
 }
 
+//Options I explored for other ways of populating the level with impassable blocks
+
 // //adds at most length number of blocks
 // Prims.prototype.addFewBlocks = function(l){
 // 	blocks = [];
